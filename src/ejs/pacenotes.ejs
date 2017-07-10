@@ -1,0 +1,102 @@
+<div id="cue_sheet" class="cue_sheet_main_frame">
+    <div class="import_data_frame" v-if="frame.name=='import'" v-cloak>
+        <div class="import_data_message" v-if=" routeData.wayPointList.length==0">Data is empty.</div>
+        <div class="import_data_message" v-if=" routeData.wayPointList.length>0">{{ routeData.title }}</div>
+        <input type="button" class="normal_button import_data_button" value="Import data" @click="importData">
+        <div class="import_data_back" v-if=" routeData.wayPointList.length>0" @click="toCue">
+            <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>
+            Back
+        </div>
+    </div>
+    <div class="cue_sheet_frame" v-if="frame.name=='cue'" v-cloak>
+        <div
+                class="cue_sheet_item"
+                v-for="(wayPoint, index) in routeData.wayPointList"
+                v-if="index==routeData.selectedIndex"
+                :class="{cue_sheet_pc: index==0 || index==routeData.wayPointList.length-1 || wayPoint.icon>=2}"
+                v-cloak>
+            <div class="cue_sheet_number">#{{ (index+1) }}</div>
+
+            <div class="cue_sheet_turn" v-if="index==0">8</div>
+            <div class="cue_sheet_turn" v-if="index!=0 && index!=routeData.wayPointList.length-1">
+                {{ wayPoint.turn }}
+            </div>
+            <div class="cue_sheet_turn" v-if="index==routeData.wayPointList.length-1">0</div>
+
+            <div class="cue_sheet_distance">
+                <div class="cue_sheet_distance_interval">{{ (wayPoint.interval/1000).toFixed(1) }}km</div>
+                <div class="cue_sheet_distance_total">/ {{ (wayPoint.distance/1000).toFixed(1) }}km</div>
+            </div>
+            <div class="cue_sheet_road_name" v-if="index<routeData.lineList.length">
+                <i class="fa fa-road" aria-hidden="true"></i>
+                {{ routeData.lineList[index].ref }}
+            </div>
+            <div class="cue_sheet_altitude">Alt. {{ wayPoint.altitude }}m</div>
+            <div class="cue_sheet_static_map">
+                <img class="cue_sheet_image" :src="wayPoint.staticMapImage">
+            </div>
+            <svg class="cue_sheet_line" viewbox="0 0 300 300">
+                <circle
+                        :cx="staticMapCircleX(index)"
+                        :cy="staticMapCircleY(index)"
+                        r="11"
+                        class="cue_sheet_line_circle">
+                </circle>
+                <path
+                        :d="staticMapLine(index)"
+                        class="cue_sheet_line_path">
+                </path>
+                <path
+                        :d="staticMapArrow(index)"
+                        class="cue_sheet_line_arrow">
+                </path>
+            </svg>
+            <svg
+                    class="cue_sheet_user_location"
+                    viewbox="0 0 300 300"
+                    @touchstart="mouseDown($event)"
+                    @touchend="mouseUp($event)">
+                <circle
+                        v-if=" routeData.distanceList.length>index && routeData.distanceList[index].distance<=180"
+                        :cx="userLocationCircleX(index)"
+                        :cy="userLocationCircleY(index)"
+                        r="8"
+                        class="cue_sheet_user_location_circle">
+                </circle>
+                <path
+                        v-if=" routeData.distanceList.length>index && routeData.distanceList[index].distance>180"
+                        :d="userLocationDirection(index)"
+                        class="cue_sheet_user_location_direction">
+                </path>
+                <text
+                        v-if=" routeData.distanceList.length>index && routeData.distanceList[index].distance>180"
+                        :x="userLocationDirectionTextX(index)"
+                        :y="userLocationDirectionTextY(index)"
+                        class="cue_sheet_user_location_text">
+                        {{(routeData.distanceList[index].distance/1000).toFixed(2)}}km
+                </text>
+            </svg>
+
+            <div class="user_coordinate" v-if=" routeData.userLocation.length!=0">
+                <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                {{ routeData.userLocation[0].toFixed(6) }} / {{ routeData.userLocation[1].toFixed(6) }}
+            </div>
+            <div class="cue_sheet_coordinate">{{ wayPoint.lngLat[0].toFixed(6) }} / {{ wayPoint.lngLat[1].toFixed(6) }}</div>
+            <div class="cue_sheet_comment"  @click="setComment(index)">{{ wayPoint.comment }}</div>
+        </div>
+        <div class="map_controller">
+            <input
+                    type="button"
+                    value="&#xf019;"
+                    @click="toImport"
+                    class="map_button">
+            <input
+                    type="button"
+                    value="&#xf124;"
+                    @click="currentCUE"
+                    class="map_button">
+        </div>
+    </div>
+    <div id="map_profile" class="map_profile_frame" v-if="frame.name=='profile'" v-cloak>
+    </div>
+</div>

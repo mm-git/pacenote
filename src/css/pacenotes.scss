@@ -1,0 +1,264 @@
+// colors
+$font_color: #2f3432;
+$background_color: #d8d8d8;
+$border_color: #888888;
+
+@import "../../node_modules/font-awesome/css/font-awesome";
+@import "../../node_modules/backbone-graph/dist/css/backbone-graph";
+
+@font-face {
+  font-family: "Jaldi";
+  src: url("/fonts/Jaldi-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "NumberArrow";
+  src: url("/fonts/Arrow-Regular.ttf") format("truetype");
+}
+
+body {
+  background: $background_color;
+  box-sizing: border-box;
+  font-size: 8vw;
+}
+
+.cue_sheet_main_frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.import_data_message {
+  font-family: "Jaldi", sans-serif;
+  font-size: 5vw;
+  margin-top: 20vh;
+  text-align: center;
+}
+
+.import_data_button {
+  display: block;
+  font-size: 5vw;
+  margin-top: 20vh;
+  margin-left: 10vw;
+  height: 8vw;
+}
+
+.import_data_back {
+  margin-top: 20vh;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.cue_sheet_item {
+  display: block;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.cue_sheet_pc {
+  background: #ffbe72;
+}
+
+.cue_sheet_number {
+  font-family: "Jaldi", sans-serif;
+  font-size: 5vw;
+  left: 2vw;
+  position: absolute;
+  top: 2vw;
+}
+
+$turn_font_size: 10vw;
+.cue_sheet_turn {
+  background: $border_color;
+  border-radius: 3px;
+  color: #f0f0f0;
+  cursor: pointer;
+  display: block;
+  font-family: "NumberArrow", serif;
+  font-size: $turn_font_size;
+  height: $turn_font_size + 2vw;
+  left: 12vw;
+  line-height: $turn_font_size + 2vw;
+  position: absolute;
+  text-align: center;
+  top: 2vw;
+  width: $turn_font_size + 2vw;
+}
+
+.cue_sheet_distance {
+  align-items: baseline;
+  display: flex;
+  left: 28vw;
+  position: absolute;
+  top: 2vw;
+  width: 72vw;
+}
+
+.cue_sheet_distance_interval {
+  flex-basis: 50%;
+  font-family: "Jaldi", sans-serif;
+  font-size: 10vw;
+  text-align: left;
+}
+
+.cue_sheet_distance_total {
+  flex-basis: 50%;
+  font-family: "Jaldi", sans-serif;
+  font-size: 8vw;
+  text-align: right;
+}
+
+.cue_sheet_road_name {
+  display: block;
+  font-family: "Jaldi", sans-serif;
+  left: 2vw;
+  position: absolute;
+  top: 14vw;
+}
+
+.cue_sheet_altitude {
+  display: block;
+  font-family: "Jaldi", sans-serif;
+  right: 2vw;
+  position: absolute;
+  text-align: right;
+  top: 14vw;
+}
+
+
+$static_map_image_size: 96vw;
+$static_map_line_color: #ff0000;
+$static_map_user_color: #2f5fbd;
+
+.cue_sheet_static_map {
+  border: 1px solid $border_color;
+  height: $static_map_image_size;
+  left: 2vw;
+  overflow: hidden;
+  position: absolute;
+  top: 24vw;
+  user-select: none;
+  width: $static_map_image_size;
+}
+
+.cue_sheet_image {
+  width: $static_map_image_size;
+  height: $static_map_image_size;
+}
+
+.cue_sheet_line,
+.cue_sheet_user_location {
+  height: $static_map_image_size;
+  left: calc(2vw + 1px);
+  position: absolute;
+  top: 24vw;
+  user-select: none;
+  width: $static_map_image_size;
+}
+
+.cue_sheet_line_circle,
+.cue_sheet_line_arrow {
+  fill: $static_map_line_color;
+  fill-opacity: 0.5;
+}
+
+.cue_sheet_line_path {
+  stroke: $static_map_line_color;
+  stroke-width: 2vw;
+  stroke-opacity: 0.5;
+  fill-opacity: 0;
+}
+
+.cue_sheet_user_location_circle {
+  fill: $static_map_user_color;
+  stroke: #ffffff;
+  stroke-width: 3px;
+  fill-opacity: 0.7;
+}
+
+.cue_sheet_user_location_direction {
+  fill: $static_map_user_color;
+  fill-opacity: 0.7;
+}
+
+.cue_sheet_user_location_text {
+  fill: $static_map_user_color;
+  font-family: "Jaldi", sans-serif;
+  font-size: 16px;
+  stroke: #ffffff;
+  stroke-width: 0.5px;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+}
+
+.user_coordinate {
+  font-family: "Jaldi", sans-serif;
+  font-size: 4vw;
+  left: 4vw;
+  position: absolute;
+  top: $static_map_image_size + 24vw;
+}
+
+.cue_sheet_coordinate {
+  font-family: "Jaldi", sans-serif;
+  font-size: 4vw;
+  right: 4vw;
+  position: absolute;
+  top: $static_map_image_size + 24vw;
+}
+
+.cue_sheet_comment {
+  background: lighten($background_color, 5%);
+  border: 1px solid $border_color;
+  border-left: 2vw solid $border_color;
+  display: block;
+  font-size: 5.5vw;
+  height: 30vw;
+  left: 2vw;
+  line-height: 5.8vw;
+  padding: 1vw 2vw;
+  position: absolute;
+  top: $static_map_image_size + 32vw;
+  width: 96vw;
+}
+
+$map_icon_size: 11vw;
+.map_controller {
+  position: absolute;
+  right: 6vw;
+  top: 26vw;
+  width: $map_icon_size;
+}
+
+.map_button{
+  -webkit-appearance: none;
+  background: $border_color;
+  border: 0;
+  border-radius: 5px;
+  color: #000000;
+  display: block;
+  font-family: FontAwesome, sans-serif;
+  font-size: $map_icon_size;
+  height: $map_icon_size + 2vw;
+  line-height: $map_icon_size;
+  margin-bottom: 2vw;
+  opacity: 0.8;
+  padding: 1vw;
+  text-align: center;
+  width: $map_icon_size + 2vw;
+}
+
+
+
+.map_profile_frame {
+  flex-basis: 100%;
+  height: 50%;
+  position: relative;
+  width: 100%;
+}
+
+.backbone_graph_scale,
+.backbone_graph_scale_button,
+.backbone_graph_scale_number {
+  display: none;
+}
