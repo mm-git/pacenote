@@ -15,12 +15,23 @@ $border_color: #888888;
   src: url("../fonts/Arrow-Regular.ttf") format("truetype");
 }
 
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 body {
   background: $background_color;
-  box-sizing: border-box;
   font-size: 8vw;
   margin: 0;
   padding: 0;
+}
+
+[v-cloak] {
+  opacity: 0;
+}
+
+.hidden_item {
+  display: none;
 }
 
 .cue_sheet_main_frame {
