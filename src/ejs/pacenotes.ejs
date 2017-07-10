@@ -3,6 +3,7 @@
         <div class="import_data_message" v-if=" routeData.wayPointList.length==0">Data is empty.</div>
         <div class="import_data_message" v-if=" routeData.wayPointList.length>0">{{ routeData.title }}</div>
         <input type="button" class="import_data_button" value="Import data" @click="importData">
+        <input type="button" class="import_data_button" value="Clear data" @click="clearData">
         <div class="import_data_back" v-if=" routeData.wayPointList.length>0" @click="toCue">
             <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>
             Back

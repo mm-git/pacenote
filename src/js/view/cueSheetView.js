@@ -34,7 +34,19 @@ class CueSheetView {
             },
             () => {}
           )
-
+        },
+        clearData: () => {
+          let applicationCache = window.applicationCache;
+          applicationCache.addEventListener('updateready', () => {
+            applicationCache.swapCache();
+            location.reload();
+          }, false)
+          try{
+            applicationCache.update();
+          }
+          catch(e){
+            alert(e.message);
+          }
         },
         toCue: () => {
           setTimeout(() => {
