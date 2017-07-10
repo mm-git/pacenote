@@ -8,11 +8,11 @@ $border_color: #888888;
 
 @font-face {
   font-family: "Jaldi";
-  src: url("/fonts/Jaldi-Bold.ttf") format("truetype");
+  src: url("fonts/Jaldi-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "NumberArrow";
-  src: url("/fonts/Arrow-Regular.ttf") format("truetype");
+  src: url("fonts/Arrow-Regular.ttf") format("truetype");
 }
 
 body {
@@ -35,12 +35,23 @@ body {
 }
 
 .import_data_button {
+  -webkit-appearance: none;
+  background-color: $border_color;
+  border: 0;
+  border-radius: 3px;
+  color: $font_color;
+  cursor: pointer;
   display: block;
+  font-family: FontAwesome, sans-serif;
   font-size: 5vw;
+  height: 8vw;
   margin-top: 20vh;
   margin-left: 10vw;
-  height: 8vw;
+  padding: 0;
+  text-align: center;
+  width: 85%;
 }
+
 
 .import_data_back {
   margin-top: 20vh;
