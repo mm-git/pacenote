@@ -57,7 +57,7 @@ gulp.task 'js', ->
       @emit('end')
   }))
   .pipe(gulp_webpack(webpackConfig))
-  .pipe(uglify())
+#  .pipe(uglify())
   .pipe(rename({
     extname: '.min.js'
   }))

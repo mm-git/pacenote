@@ -2,7 +2,7 @@
  * Created by code house on 2017/06/27.
  */
 let Graph = require('backbone-graph');
-let MarkerIcon = require('../../../route/js/model/RouteData/markerIcon');
+let MarkerIcon = require('./markerIcon');
 
 class GraphData {
   constructor(options) {
