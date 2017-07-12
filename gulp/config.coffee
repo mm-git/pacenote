@@ -7,7 +7,6 @@ module.exports = {
   dest: './docs'
   copyList: [
     ['./src/fonts/*', '/fonts']
-    ['./src/appcache.manifest', '/']
     ['./node_modules/font-awesome/fonts/*', '/fonts']
   ]
 }

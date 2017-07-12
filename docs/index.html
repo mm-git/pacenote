@@ -21,7 +21,7 @@
         <div class="import_data_message" v-if=" routeData.wayPointList.length==0">Data is empty.</div>
         <div class="import_data_message" v-if=" routeData.wayPointList.length>0">{{ routeData.title }}</div>
         <input type="button" class="import_data_button" value="Import data" @click="importData">
-        <input type="button" class="import_data_button" value="Clear data" @click="clearData">
+        <input type="button" class="import_data_button" value="Refresh application" @click="clearData">
         <div class="import_data_back" v-if=" routeData.wayPointList.length>0" @click="toCue">
             <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>
             Back
@@ -95,6 +95,16 @@
                         {{(routeData.distanceList[index].distance/1000).toFixed(2)}}km
                 </text>
             </svg>
+            <div class="cue_sheet_lost" v-if="routeData.closestDistance>=0">
+                <div
+                        class="cue_sheet_lost_close"
+                        v-if="routeData.closestDistance<=500">On route</div>
+                <div
+                        class="cue_sheet_lost_far"
+                        v-if="routeData.closestDistance>500">
+                    Lost {{ (routeData.closestDistance/1000).toFixed(2) }}km
+                </div>
+            </div>
 
             <div class="user_coordinate" v-if=" routeData.userLocation.length!=0">
                 <i class="fa fa-location-arrow" aria-hidden="true"></i>

@@ -17,13 +17,13 @@ $border_color: #888888;
 
 *, *:before, *:after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   background: $background_color;
   font-size: 8vw;
-  margin: 0;
-  padding: 0;
 }
 
 [v-cloak] {
@@ -214,6 +214,17 @@ $static_map_user_color: #2f5fbd;
   stroke-width: 0.5px;
   stroke-linecap: butt;
   stroke-linejoin: miter;
+}
+
+.cue_sheet_lost {
+  font-family: "Jaldi", sans-serif;
+  left: 4vw;
+  position: absolute;
+  top: 22vw;
+}
+
+.cue_sheet_lost_far{
+  color: $static_map_line_color;
 }
 
 .user_coordinate {

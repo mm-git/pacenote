@@ -8,7 +8,7 @@ sequence = require('run-sequence')
 gulp.task 'build', (cb) ->
   sequence(
     'clean'
-    ['favicons', 'sass', 'js', 'copy']
+    ['favicons', 'sass', 'js', 'copy', 'manifest']
     'ejs'
     cb
   )

@@ -14,6 +14,7 @@ class RouteData {
       wayPointList: [],
       lineList: [],
       selectedIndex: 0,
+      closestDistance: -1,
       distanceList: [],
       userLocation: []
     };
@@ -38,6 +39,8 @@ class RouteData {
   }
   get selectedIndex() { return this.data.selectedIndex }
   set selectedIndex(val) { this.data.selectedIndex = val }
+  get closestDistance() { return this.data.closestDistance }
+  set closestDistance(val) { this.data.closestDistance = val }
   get distanceList() { return this.data.distanceList }
   set distanceList(val) { this.data.distanceList = val }
   get userLocation() { return this.data.userLocation }
@@ -112,8 +115,11 @@ class RouteData {
     this.userLocation.push(lngLat[0]);
     this.userLocation.push(lngLat[1]);
 
-    let minDistance = 20000000;
-    let minIndex = -1;
+    this._createDistanceList(lngLat);
+    this._calculateClosestIndex(lngLat);
+  }
+
+  _createDistanceList(lngLat) {
     this.distanceList.splice(0, this.distanceList.length);
     this.wayPointList.forEach((wayPoint, index) => {
       let distance = LineData.distance(wayPoint.lngLat, lngLat);
@@ -121,13 +127,51 @@ class RouteData {
         distance: distance,
         direction: LineData.getDirectionValue(wayPoint.lngLat, lngLat)
       });
-      if((index===0 || index===this.wayPointList.length-1 || wayPoint.icon>=1) &&
-         minDistance> distance){
-        minDistance = distance;
-        minIndex = index;
-      }
     });
-    this.selectedIndex = minIndex>=0 ? minIndex : this.selectedIndex;
+  }
+
+  _calculateClosestIndex(lngLat) {
+    let minDistance = 20000000;
+    let minIndex = -1;
+    this.lineList.forEach((line, lineIndex) => {
+      line.line.reduce((startPoint, endPoint) => {
+        if(startPoint[0] === lngLat[0] && startPoint[1] === lngLat[1]){
+          minDistance = 0;
+          minIndex = lineIndex;
+          return endPoint;
+        }
+
+        let lineDirection = LineData.getDirectionValue(startPoint, endPoint);
+        let userDirection = LineData.getDirectionValue(startPoint, lngLat);
+        let direction = Math.abs(lineDirection - userDirection);
+        if(direction>180.0){
+          direction = Math.abs(direction - 360.0);
+        }
+        if(direction<=90.0){
+          let radian = direction * Math.PI / 180.0;
+          let lineDistance = LineData.distance(startPoint, endPoint);
+          let userDistance = LineData.distance(startPoint, lngLat);
+          let userDistanceOnLine = userDistance * Math.cos(radian);
+          if(userDistanceOnLine < lineDistance){
+            let userDistanceFromLine = userDistance * Math.sin(radian);
+            if(userDistanceFromLine < minDistance){
+              minDistance = userDistanceFromLine;
+              minIndex = lineIndex;
+            }
+          }
+        }
+        return endPoint;
+      })
+    });
+
+    if(minIndex !== -1){
+      this.closestDistance = minDistance;
+      this.selectedIndex = minIndex;
+
+      while(this.wayPointList[this.selectedIndex].icon===MarkerIcon.POINT && this.selectedIndex>0){
+        this.selectedIndex--;
+      }
+    }
   }
 
   toJSON() {
