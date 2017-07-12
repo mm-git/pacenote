@@ -7,6 +7,7 @@ let GeoLocationModel = require('../model/geoLocationModel');
 class CueSheetView {
   constructor(options){
     this.routeData = options.routeData;
+    this.graphData = options.graphData;
     this.frame = {
       name: this.routeData.wayPointList.length>0 ? "cue" : "import"
     };
@@ -28,6 +29,7 @@ class CueSheetView {
                 this.routeData.deleteData();
                 this.routeData.readJSON(JSON.parse(e.target.result));
                 this.routeData.store();
+                this.graphData.refresh();
                 this.frame.name = "cue";
               };
               fileReader.readAsText(fileList[0]);
@@ -68,6 +70,7 @@ class CueSheetView {
           .then(
             (lngLat) => {
               this.routeData.setUserLocation(lngLat);
+              this.graphData.refresh();
             },
             (error) => {
               alert(error.message);

@@ -16,6 +16,7 @@ let graphData = new GraphData({
 // initialize view
 let cueSheetView = new CueSheetView({
   routeData: routeData,
+  graphData: graphData
 });
 let profileView = new ProfileView({
   graphData: graphData

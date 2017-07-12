@@ -8,27 +8,30 @@ class GraphData {
   constructor(options) {
     this._routeData = options.routeData;
 
-    this.lineData = new Graph.LineData({
-      lineColor: GraphData.LINE_COLOR,
-      peakColor: GraphData.PEAK_COLOR
-    });
-    this.cpData = new Graph.PointData();
-
     this._graphData = new Graph.Collection([
-      this.lineData,
-      this.cpData
+      new Graph.LineData({
+        lineColor: GraphData.LINE_COLOR,
+        peakColor: GraphData.PEAK_COLOR
+      }),
+      new Graph.PointData(),
+      new Graph.PointData()
     ]);
 
-    this._createProfileData();
-    this._createCPData();
-    this._graphData.change();
-
-    this.statistics = {
-      line: this.lineData.smoothStatistics,
-    };
+    this.refresh();
   }
 
   get graphData() { return this._graphData }
+
+  refresh() {
+    this._createProfileData();
+    this._createCPData();
+    this._createUserData();
+    this._graphData.change();
+
+    this.statistics = {
+      line: this._graphData.at(0).smoothStatistics,
+    };
+  }
 
   _createProfileData() {
     let profileData = this._graphData.at(0);
@@ -80,6 +83,32 @@ class GraphData {
     })
   }
 
+  _createUserData() {
+    let userData = this._graphData.at(2);
+    userData.clear();
+
+    if(this._routeData.closestDistance < 0){
+      return;
+    }
+
+    let lineIndex = this._routeData.closestLineIndex;
+    let pointIndex = this._routeData.closestPointIndex;
+    let distance = this._routeData.wayPointList[lineIndex].distance;
+    let altitude = this._routeData.lineList[lineIndex].altitude[pointIndex];
+    if(pointIndex>0){
+      this._routeData.lineList[lineIndex].line.slice(0, pointIndex+1).reduce((startPoint, endPoint) => {
+        distance += GraphData.distance(startPoint, endPoint);
+        return endPoint;
+      })
+    }
+
+    userData.addPoint(
+      new Graph.Point(distance / GraphData.METER_PER_KILO, altitude),
+      GraphData.USER_COLOR,
+      Graph.PointData.SHAPE.CIRCLE
+    );
+  }
+
   static distance(from, to) {
     let deg2rad = (deg) => {
       return deg * (Math.PI/180)
@@ -106,6 +135,7 @@ GraphData.AXIS_COLOR = "#7bbcd8";
 GraphData.LINE_COLOR = "#ffcc00";
 GraphData.PEAK_COLOR = "#ffffff00";
 GraphData.CP_COLOR = "#ff0000";
+GraphData.USER_COLOR = "#3c4ee6";
 
 GraphData.SMOOTHING_INTERVAL = 0.1;
 GraphData.SMOOTHING_RANGE = 10;
