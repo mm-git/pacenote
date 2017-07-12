@@ -40,7 +40,7 @@ class CueSheetView {
           applicationCache.addEventListener('updateready', () => {
             applicationCache.swapCache();
             location.reload();
-          }, false)
+          }, false);
           try{
             applicationCache.update();
           }

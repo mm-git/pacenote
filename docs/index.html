@@ -17,7 +17,7 @@
 <body>
 <div class="container-fluid">
     <div id="cue_sheet" class="cue_sheet_main_frame">
-    <div class="import_data_frame" v-if="frame.name=='import'" v-cloak>
+    <div class="import_data_frame" v-show="frame.name=='import'" v-cloak>
         <div class="import_data_message" v-if=" routeData.wayPointList.length==0">Data is empty.</div>
         <div class="import_data_message" v-if=" routeData.wayPointList.length>0">{{ routeData.title }}</div>
         <input type="button" class="import_data_button" value="Import data" @click="importData">
@@ -27,7 +27,7 @@
             Back
         </div>
     </div>
-    <div class="cue_sheet_frame" v-if="frame.name=='cue'" v-cloak>
+    <div class="cue_sheet_frame" v-show="frame.name=='cue'" v-cloak>
         <div
                 class="cue_sheet_item"
                 v-for="(wayPoint, index) in routeData.wayPointList"
@@ -114,11 +114,25 @@
                     value="&#xf124;"
                     @click="currentCUE"
                     class="map_button">
+            <input
+                    type="button"
+                    value="&#xf1fe;"
+                    @click="toProfile"
+                    class="map_button">
         </div>
     </div>
-    <div id="map_profile" class="map_profile_frame" v-if="frame.name=='profile'" v-cloak>
+    <div id="map_profile" class="map_profile_frame"  v-show="frame.name=='profile'" v-cloak>
+        <div id="map_profile_graph"></div>
+        <div class="profile_controller">
+            <input
+                    type="button"
+                    value="&#xf057;"
+                    @click="toCue"
+                    class="profile_button">
+        </div>
     </div>
 </div>
+
     <div id="file_select" class="hidden_item">
     <input id="file_select_input" class="hidden_item" type="file" @change="changeFile">
 </div>
